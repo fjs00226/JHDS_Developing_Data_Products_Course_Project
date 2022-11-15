@@ -20,7 +20,7 @@ ui <- fluidPage(
     h4("Author: Ji"),
     h4("Date: 11/14/2022"),
 
-    # Sidebar with a slider input for number of bins 
+    # Sidebar with a select bar for am, and sliders for wt and qsec 
     sidebarLayout(
         sidebarPanel(
             selectInput(inputId = "am", 
@@ -40,7 +40,7 @@ ui <- fluidPage(
             
         ),
 
-        # Show a plot of the generated distribution
+        # Show a plot of the data and text output for input and prediction 
         mainPanel(
            plotOutput(outputId = "distPlot"),
            h4(textOutput("para")),
@@ -50,7 +50,7 @@ ui <- fluidPage(
     )
 )
 
-# Define server logic required to draw a histogram
+# Define server logic required to plot and predict
 server <- function(input, output) {
     output$para<-renderText({
       paste("You have selected Transmission =",input$am,", Wt =",input$wt,"and Qsec =",input$qsec,".")
@@ -80,8 +80,9 @@ server <- function(input, output) {
     })
     output$pred <- renderText({
       # split data according to am input
+      # need to write this again to avoid errors
       mtcars_v1 <- mtcars[which(mtcars$am == input$am),]
-      # fit mpg ~ wt_+sec
+      # fit mpg ~ wt + sec
       fit <- lm(mpg~wt+qsec, mtcars_v1)
       pred <- predict(fit,
                       newdata = data.frame(
