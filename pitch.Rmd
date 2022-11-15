@@ -1,0 +1,41 @@
+---
+title: "Mtcars Data Analysis"
+author: "Ji"
+date: "2022-11-14"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+## Function of the app
+
+- This app is used to analyze the mtcars dataset.
+- Mpg value is predicted by significant parameters: am, wt and qsec.
+- Linear model is used for prediction.
+
+## Data introduction
+Mtcars is composed of 32 observations of 11 variables. Among them, am (Transmission), wt (weight), and qsec (1/4 mile time) are significant variables for mpg that have been found in the Regression Models Course.
+```{r, echo=FALSE}
+data(mtcars)
+str(mtcars)
+```
+
+## Parameters analysis
+- Am = 0 and am = 1 separates the dataset into 2 different linear model.
+- Mpg is negatively correlated with wt and qsec.
+```{r cars, echo = FALSE}
+library(ggplot2)
+mtcars$am<-as.factor(mtcars$am)
+ggplot(data = mtcars, aes(x=wt, y = mpg,color = am, size = qsec))+
+  geom_point()+
+  geom_smooth(method= "lm")+
+  labs(title = "mpg vs. wt, qsec and am")
+```
+
+## Use of the app
+- The user selects the Transmission of the car.
+- The app shows the linear fit of the data.
+- The user uses the slider to set the Wt and Qsec of the car.
+- The user's input is shown below the figure together with the predicted Mpg value.
